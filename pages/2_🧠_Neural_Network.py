@@ -15,441 +15,34 @@ st.set_page_config(
 # Custom CSS
 st.markdown("""
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
-    
-    /* Global Styles */
-    * {
-        font-family: 'Poppins', sans-serif;
-    }
-    
     .main {
         padding: 2rem;
-        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
     }
-    
-    /* Header Styles */
-    h1 {
-        color: #1a1a2e !important;
-        font-weight: 700 !important;
-        text-align: center;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        font-size: 3rem !important;
-        margin-bottom: 0.5rem !important;
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
-    }
-    
-    h2 {
-        color: #2d3561 !important;
-        font-weight: 600 !important;
-        border-left: 4px solid #667eea;
-        padding-left: 1rem;
-        margin: 1.5rem 0 1rem 0 !important;
-    }
-    
-    h3 {
-        color: #1a1a2e !important;
-        font-weight: 600 !important;
-    }
-    
-    /* Sidebar Styles */
-    [data-testid="stSidebar"] {
-        background: linear-gradient(180deg, #2d3561 0%, #1a1a2e 100%);
-        color: white !important;
-    }
-    
-    [data-testid="stSidebar"] * {
-        color: white !important;
-    }
-    
-    [data-testid="stSidebar"] .stSelectbox label,
-    [data-testid="stSidebar"] .stSlider label {
-        color: #f0f0f0 !important;
-        font-weight: 500 !important;
-    }
-    
-    /* Tab Styles */
-    .stTabs [data-baseweb="tab-list"] {
-        gap: 8px;
-        background-color: transparent;
-        padding: 0.5rem;
-    }
-    
-    .stTabs [data-baseweb="tab"] {
-        height: 50px;
-        padding: 10px 24px;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white !important;
-        border-radius: 10px;
-        font-weight: 600;
-        border: none;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    }
-    
-    .stTabs [data-baseweb="tab"]:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 12px rgba(0,0,0,0.15);
-    }
-    
-    .stTabs [data-baseweb="tab"][aria-selected="true"] {
-        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-        color: white !important;
-    }
-    
-    /* Button Styles */
-    .stButton > button {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white !important;
-        border: none;
-        border-radius: 10px;
-        padding: 0.75rem 2rem;
-        font-weight: 600;
-        font-size: 1rem;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
-        text-transform: uppercase;
-        letter-spacing: 1px;
-    }
-    
-    .stButton > button:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
-        background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
-    }
-    
-    .stButton > button:active {
-        transform: translateY(-1px);
-    }
-    
-    /* Metric Cards */
-    [data-testid="stMetricValue"] {
-        color: #1a1a2e !important;
-        font-size: 2rem !important;
-        font-weight: 700 !important;
-    }
-    
-    [data-testid="stMetricLabel"] {
-        color: #2d3561 !important;
-        font-weight: 600 !important;
-        font-size: 1rem !important;
-    }
-    
-    [data-testid="stMetricDelta"] {
-        font-weight: 600 !important;
-    }
-    
-    div[data-testid="metric-container"] {
-        background: white;
-        padding: 1.5rem;
-        border-radius: 15px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        border-left: 5px solid #667eea;
-        transition: all 0.3s ease;
-    }
-    
-    div[data-testid="metric-container"]:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-    }
-    
-    /* Alert Styles */
     .stAlert {
         padding: 1rem;
-        border-radius: 15px;
-        border: none;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        animation: slideIn 0.5s ease;
+        border-radius: 0.5rem;
     }
-    
-    @keyframes slideIn {
-        from {
-            opacity: 0;
-            transform: translateY(-20px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
+    h1 {
+        color: #e74c3c;
+        font-weight: bold;
     }
-    
-    /* Info Box */
-    .stInfo {
-        background: linear-gradient(135deg, #667eea22 0%, #764ba222 100%);
-        border-left: 5px solid #667eea;
+    h2 {
+        color: #3498db;
     }
-    
-    /* Success Box */
-    .stSuccess {
-        background: linear-gradient(135deg, #11998e22 0%, #38ef7d22 100%);
-        border-left: 5px solid #11998e;
+    .stTabs [data-baseweb="tab-list"] {
+        gap: 24px;
     }
-    
-    /* Text and Content */
-    div.st-emotion-cache-1wpb1x8:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) {
-        color: white !important;
-    }
-    
-    div.st-emotion-cache-1wpb1x8 {
-        color: white !important;
-    }
-    
-    div.st-emotion-cache-18kf3ut:nth-child(3) {
-        color: white !important;
-    }
-    
-    div.st-emotion-cache-18kf3ut:nth-child(3) * {
-        color: white !important;
-    }
-    
-    p, span, div {
-        color: #2d3561 !important;
-    }
-    
-    /* Dataframe Styles */
-    .dataframe {
-        border: none !important;
-        border-radius: 10px;
-        overflow: hidden;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    }
-    
-    .dataframe thead tr th {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
-        color: white !important;
-        font-weight: 600 !important;
-        padding: 1rem !important;
-    }
-    
-    .dataframe tbody tr:nth-child(even) {
-        background-color: #f8f9fa !important;
-    }
-    
-    .dataframe tbody tr:hover {
-        background-color: #e9ecef !important;
-        transition: all 0.2s ease;
-    }
-    
-    /* Expander Styles */
-    .streamlit-expanderHeader {
-        background: linear-gradient(135deg, #667eea11 0%, #764ba211 100%);
-        border-radius: 10px;
-        font-weight: 600;
-        color: #1a1a2e !important;
-        padding: 1rem;
-    }
-    
-    .streamlit-expanderHeader:hover {
-        background: linear-gradient(135deg, #667eea22 0%, #764ba222 100%);
-    }
-    
-    /* Slider Styles */
-    .stSlider > div > div > div {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    }
-    
-    /* Input Fields */
-    .stTextInput > div > div > input,
-    .stNumberInput > div > div > input {
-        border-radius: 10px;
-        border: 2px solid #e0e0e0;
-        padding: 0.75rem;
-        transition: all 0.3s ease;
-    }
-    
-    .stTextInput > div > div > input:focus,
-    .stNumberInput > div > div > input:focus {
-        border-color: #667eea;
-        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-    }
-    
-    /* Spinner */
-    .stSpinner > div {
-        border-top-color: #667eea !important;
-    }
-    
-    /* Progress Bar */
-    .stProgress > div > div > div > div {
-        background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
-    }
-    
-    /* Scrollbar */
-    ::-webkit-scrollbar {
-        width: 10px;
-        height: 10px;
-    }
-    
-    ::-webkit-scrollbar-track {
-        background: #f1f1f1;
-        border-radius: 10px;
-    }
-    
-    ::-webkit-scrollbar-thumb {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        border-radius: 10px;
-    }
-    
-    ::-webkit-scrollbar-thumb:hover {
-        background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
-    }
-    
-    /* Card Effect */
-    [data-testid="column"] {
-        background: white;
-        padding: 1rem;
-        border-radius: 15px;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-    }
-    
-    /* Animation for content */
-    .element-container {
-        animation: fadeIn 0.5s ease-in;
-    }
-    
-    @keyframes fadeIn {
-        from {
-            opacity: 0;
-        }
-        to {
-            opacity: 1;
-        }
-    }
-    
-    /* Markdown Styles */
-    .stMarkdown {
-        color: #2d3561 !important;
-    }
-    
-    /* Code Blocks */
-    code {
-        background: #f8f9fa;
-        padding: 0.2rem 0.4rem;
+    .stTabs [data-baseweb="tab"] {
+        padding: 10px 20px;
+        background-color: #f0f2f6;
         border-radius: 5px;
-        color: #e74c3c !important;
-        font-family: 'Courier New', monospace;
-    }
-    
-    pre {
-        background: #1a1a2e;
-        padding: 1rem;
-        border-radius: 10px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-    }
-    
-    /* Custom Title Section */
-    .title-container {
-        text-align: center;
-        padding: 2rem 0;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        border-radius: 20px;
-        margin-bottom: 2rem;
-        box-shadow: 0 10px 40px rgba(102, 126, 234, 0.3);
-    }
-    
-    .title-container h1 {
-        color: white !important;
-        -webkit-text-fill-color: white !important;
-        font-size: 3.5rem !important;
-        margin-bottom: 0.5rem !important;
-        text-shadow: 2px 2px 8px rgba(0,0,0,0.2);
-    }
-    
-    .subtitle {
-        color: rgba(255, 255, 255, 0.95) !important;
-        font-size: 1.3rem !important;
-        font-weight: 500 !important;
-        letter-spacing: 1px;
-    }
-    
-    /* Info Cards Enhancement */
-    .info-card {
-        background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
-        padding: 1.5rem;
-        border-radius: 20px;
-        box-shadow: 0 8px 30px rgba(0,0,0,0.12);
-        border: 2px solid transparent;
-        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        position: relative;
-        overflow: hidden;
-    }
-    
-    .info-card::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 4px;
-        background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
-    }
-    
-    .info-card:hover {
-        transform: translateY(-10px) scale(1.02);
-        box-shadow: 0 15px 50px rgba(102, 126, 234, 0.3);
-        border: 2px solid #667eea;
-    }
-    
-    /* Architecture Info Box */
-    .stInfo {
-        background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%) !important;
-        border-left: 6px solid #667eea !important;
-        border-radius: 15px !important;
-        padding: 1.5rem !important;
-        font-size: 1.1rem !important;
-        font-weight: 600 !important;
-        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.15) !important;
-        animation: pulse 2s infinite;
-    }
-    
-    @keyframes pulse {
-        0%, 100% {
-            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.15);
-        }
-        50% {
-            box-shadow: 0 8px 30px rgba(102, 126, 234, 0.25);
-        }
-    }
-    
-    .stInfo p {
-        color: #1a1a2e !important;
-        margin: 0 !important;
-    }
-    
-    /* Section Headers */
-    .section-header {
-        background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        font-size: 2rem !important;
-        font-weight: 700 !important;
-        margin: 2rem 0 1rem 0 !important;
-        position: relative;
-        padding-bottom: 0.5rem;
-    }
-    
-    .section-header::after {
-        content: '';
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 100px;
-        height: 4px;
-        background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
-        border-radius: 2px;
     }
     </style>
     """, unsafe_allow_html=True)
 
-# Title with custom styling
-st.markdown("""
-    <div class="title-container">
-        <h1>🧠 Deep Learning Gradient Descent</h1>
-        <p class="subtitle">Train Neural Networks with Different Optimizers</p>
-    </div>
-    """, unsafe_allow_html=True)
+# Title
+st.title("🧠 Deep Learning Gradient Descent")
+st.markdown("**Train Neural Networks with Different Optimizers**")
 
 # Activation Functions
 class Activations:
@@ -711,8 +304,8 @@ st.sidebar.header("⚙️ Network Configuration")
 # Dataset selection
 dataset_type = st.sidebar.selectbox(
     "Select Dataset",
-    ["Binary Classification (Moons)", "Multi-class Classification (Circles)",
-    "XOR Problem", "Regression (Non-linear)"]
+    ["Binary Classification (Moons)", "Multi-class Classification (Circles)", 
+     "XOR Problem", "Regression (Non-linear)"]
 )
 
 # Network architecture
@@ -788,26 +381,18 @@ def generate_dataset(dataset_type, n_samples=1000):
 tab1, tab2, tab3 = st.tabs(["🎯 Training", "📊 Analysis", "📚 Theory"])
 
 with tab1:
-    st.markdown('<h2 class="section-header">Neural Network Training</h2>', unsafe_allow_html=True)
+    st.subheader("Neural Network Training")
     
     # Generate data
     X, y, output_size = generate_dataset(dataset_type)
     
-    st.markdown('<div style="margin: 2rem 0;">', unsafe_allow_html=True)
     col1, col2, col3 = st.columns(3)
     with col1:
-        st.markdown('<div class="info-card">', unsafe_allow_html=True)
-        st.metric("📊 Samples", X.shape[0])
-        st.markdown('</div>', unsafe_allow_html=True)
+        st.metric("Samples", X.shape[0])
     with col2:
-        st.markdown('<div class="info-card">', unsafe_allow_html=True)
-        st.metric("🔢 Input Features", X.shape[1])
-        st.markdown('</div>', unsafe_allow_html=True)
+        st.metric("Input Features", X.shape[1])
     with col3:
-        st.markdown('<div class="info-card">', unsafe_allow_html=True)
-        st.metric("🎯 Output Classes", output_size if output_size > 2 else "Binary")
-        st.markdown('</div>', unsafe_allow_html=True)
-    st.markdown('</div>', unsafe_allow_html=True)
+        st.metric("Output Classes", output_size if output_size > 2 else "Binary")
     
     # Build architecture
     architecture = [X.shape[1]] + hidden_sizes + [output_size]
