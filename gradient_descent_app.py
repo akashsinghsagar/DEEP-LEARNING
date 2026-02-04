@@ -46,6 +46,26 @@ st.markdown("**Visualize and understand gradient descent with interactive contro
 # Sidebar for configuration
 st.sidebar.header("⚙️ Configuration")
 
+# Data Source Selection in Sidebar
+st.sidebar.markdown("---")
+st.sidebar.subheader("📂 Data Source")
+data_source = st.sidebar.radio(
+    "Select data for Linear Regression:",
+    ["Synthetic Data", "Iris Dataset", "Upload CSV"],
+    help="Choose your data source for linear regression analysis"
+)
+
+# CSV Upload in Sidebar
+uploaded_file = None
+if data_source == "Upload CSV":
+    uploaded_file = st.sidebar.file_uploader(
+        "Choose a CSV file",
+        type=["csv"],
+        help="Upload a CSV file with numerical data"
+    )
+
+st.sidebar.markdown("---")
+
 # Function selection
 function_type = st.sidebar.selectbox(
     "Select Function",
@@ -146,16 +166,8 @@ def gradient_descent(start, learning_rate, iterations, func, func_derivative):
     return history, gradients
 
 # Linear Regression with Gradient Descent
-def linear_regression_gd():
+def linear_regression_gd(data_source, uploaded_file):
     st.subheader("📊 Linear Regression with Gradient Descent")
-    
-    # Data source selection
-    st.markdown("### 📂 Select Data Source")
-    data_source = st.radio(
-        "Choose your data source:",
-        ["Synthetic Data", "Iris Dataset", "Upload CSV File"],
-        horizontal=True
-    )
     
     X = None
     y = None
@@ -216,14 +228,8 @@ def linear_regression_gd():
         with st.expander("📊 View Dataset Preview"):
             st.dataframe(iris_df.head(10))
             
-    elif data_source == "Upload CSV File":
-        st.markdown("### 📤 Upload Your CSV File")
-        
-        uploaded_file = st.file_uploader(
-            "Choose a CSV file",
-            type=["csv"],
-            help="Upload a CSV file with numerical data"
-        )
+    elif data_source == "Upload CSV":
+        st.markdown("### 📤 CSV Data Analysis")
         
         if uploaded_file is not None:
             try:
@@ -274,7 +280,7 @@ def linear_regression_gd():
             except Exception as e:
                 st.error(f"Error reading CSV file: {str(e)}")
         else:
-            st.warning("Please upload a CSV file to continue")
+            st.warning("⬅️ Please upload a CSV file using the sidebar")
             return
     
     # Check if data is loaded
@@ -485,7 +491,7 @@ with tab1:
         st.dataframe(df.round(6), use_container_width=True)
 
 with tab2:
-    linear_regression_gd()
+    linear_regression_gd(data_source, uploaded_file)
 
 with tab3:
     st.subheader("📚 What is Gradient Descent?")
