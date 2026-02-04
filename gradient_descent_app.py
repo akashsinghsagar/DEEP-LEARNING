@@ -3,6 +3,8 @@ import numpy as np
 import pandas as pd
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
+from sklearn.datasets import load_iris
+from sklearn.preprocessing import StandardScaler
 
 # Page configuration
 st.set_page_config(
@@ -147,19 +149,138 @@ def gradient_descent(start, learning_rate, iterations, func, func_derivative):
 def linear_regression_gd():
     st.subheader("📊 Linear Regression with Gradient Descent")
     
-    col1, col2 = st.columns(2)
+    # Data source selection
+    st.markdown("### 📂 Select Data Source")
+    data_source = st.radio(
+        "Choose your data source:",
+        ["Synthetic Data", "Iris Dataset", "Upload CSV File"],
+        horizontal=True
+    )
     
-    with col1:
-        st.markdown("### Data Generation")
-        n_samples = st.slider("Number of samples", 10, 200, 50)
-        noise_level = st.slider("Noise level", 0.0, 10.0, 2.0)
+    X = None
+    y = None
+    true_m = None
+    true_b = None
+    feature_name = "X"
+    target_name = "Y"
+    
+    if data_source == "Synthetic Data":
+        col1, col2 = st.columns(2)
         
-    # Generate synthetic data
-    np.random.seed(42)
-    X = np.linspace(0, 10, n_samples)
-    true_m = 2.5
-    true_b = 1.0
-    y = true_m * X + true_b + np.random.randn(n_samples) * noise_level
+        with col1:
+            st.markdown("### Data Generation")
+            n_samples = st.slider("Number of samples", 10, 200, 50)
+            noise_level = st.slider("Noise level", 0.0, 10.0, 2.0)
+            
+        # Generate synthetic data
+        np.random.seed(42)
+        X = np.linspace(0, 10, n_samples)
+        true_m = 2.5
+        true_b = 1.0
+        y = true_m * X + true_b + np.random.randn(n_samples) * noise_level
+        
+    elif data_source == "Iris Dataset":
+        st.markdown("### 🌸 Iris Dataset")
+        st.info("Using the famous Iris dataset for regression analysis")
+        
+        # Load iris dataset
+        iris = load_iris()
+        iris_df = pd.DataFrame(iris.data, columns=iris.feature_names)
+        iris_df['target'] = iris.target
+        
+        col1, col2 = st.columns(2)
+        with col1:
+            feature_options = iris.feature_names
+            selected_feature = st.selectbox(
+                "Select Feature (X):",
+                feature_options,
+                index=0
+            )
+            feature_name = selected_feature
+            
+        with col2:
+            target_options = iris.feature_names + ['target']
+            selected_target = st.selectbox(
+                "Select Target (Y):",
+                target_options,
+                index=1
+            )
+            target_name = selected_target
+        
+        # Extract selected columns
+        X = iris_df[selected_feature].values
+        y = iris_df[selected_target].values
+        
+        # Display dataset info
+        st.markdown(f"**Dataset shape:** {len(X)} samples")
+        with st.expander("📊 View Dataset Preview"):
+            st.dataframe(iris_df.head(10))
+            
+    elif data_source == "Upload CSV File":
+        st.markdown("### 📤 Upload Your CSV File")
+        
+        uploaded_file = st.file_uploader(
+            "Choose a CSV file",
+            type=["csv"],
+            help="Upload a CSV file with numerical data"
+        )
+        
+        if uploaded_file is not None:
+            try:
+                # Read CSV file
+                df = pd.read_csv(uploaded_file)
+                
+                st.success(f"File uploaded successfully! Shape: {df.shape}")
+                
+                # Display data preview
+                with st.expander("📊 View Data Preview"):
+                    st.dataframe(df.head(10))
+                
+                # Let user select columns
+                numeric_columns = df.select_dtypes(include=[np.number]).columns.tolist()
+                
+                if len(numeric_columns) < 2:
+                    st.error("CSV file must contain at least 2 numerical columns!")
+                else:
+                    col1, col2 = st.columns(2)
+                    
+                    with col1:
+                        selected_feature = st.selectbox(
+                            "Select Feature (X):",
+                            numeric_columns,
+                            index=0
+                        )
+                        feature_name = selected_feature
+                        
+                    with col2:
+                        selected_target = st.selectbox(
+                            "Select Target (Y):",
+                            numeric_columns,
+                            index=min(1, len(numeric_columns)-1)
+                        )
+                        target_name = selected_target
+                    
+                    # Extract data
+                    X = df[selected_feature].values
+                    y = df[selected_target].values
+                    
+                    # Remove NaN values
+                    mask = ~(np.isnan(X) | np.isnan(y))
+                    X = X[mask]
+                    y = y[mask]
+                    
+                    st.markdown(f"**Valid samples:** {len(X)}")
+                    
+            except Exception as e:
+                st.error(f"Error reading CSV file: {str(e)}")
+        else:
+            st.warning("Please upload a CSV file to continue")
+            return
+    
+    # Check if data is loaded
+    if X is None or y is None:
+        st.warning("Please select a valid data source with proper configuration")
+        return
     
     # Initialize parameters
     m = 0.0
@@ -195,9 +316,9 @@ def linear_regression_gd():
     # Display results
     col1, col2, col3 = st.columns(3)
     with col1:
-        st.metric("Final Slope (m)", f"{m:.4f}", f"True: {true_m:.4f}")
+        st.metric("Final Slope (m)", f"{m:.4f}", f"True: {true_m:.4f}" if true_m is not None else None)
     with col2:
-        st.metric("Final Intercept (b)", f"{b:.4f}", f"True: {true_b:.4f}")
+        st.metric("Final Intercept (b)", f"{b:.4f}", f"True: {true_b:.4f}" if true_b is not None else None)
     with col3:
         st.metric("Final Cost", f"{cost_history[-1]:.4f}")
     
@@ -222,6 +343,14 @@ def linear_regression_gd():
         row=1, col=1
     )
     
+    # Add true line only for synthetic data
+    if true_m is not None and true_b is not None:
+        fig.add_trace(
+            go.Scatter(x=X, y=true_m*X+true_b, mode='lines', name='True Line',
+                      line=dict(color='green', width=2, dash='dash')),
+            row=1, col=1
+        )
+    
     # Plot 2: Cost history
     fig.add_trace(
         go.Scatter(y=cost_history, mode='lines', name='Cost',
@@ -235,8 +364,9 @@ def linear_regression_gd():
                   line=dict(color='purple', width=2)),
         row=2, col=1
     )
-    fig.add_hline(y=true_m, line_dash="dash", line_color="red", 
-                  annotation_text="True m", row=2, col=1)
+    if true_m is not None:
+        fig.add_hline(y=true_m, line_dash="dash", line_color="red", 
+                      annotation_text="True m", row=2, col=1)
     
     # Plot 4: Intercept convergence
     fig.add_trace(
@@ -244,12 +374,13 @@ def linear_regression_gd():
                   line=dict(color='orange', width=2)),
         row=2, col=2
     )
-    fig.add_hline(y=true_b, line_dash="dash", line_color="red",
-                  annotation_text="True b", row=2, col=2)
+    if true_b is not None:
+        fig.add_hline(y=true_b, line_dash="dash", line_color="red",
+                      annotation_text="True b", row=2, col=2)
     
     fig.update_layout(height=700, showlegend=True)
-    fig.update_xaxes(title_text="X", row=1, col=1)
-    fig.update_yaxes(title_text="Y", row=1, col=1)
+    fig.update_xaxes(title_text=feature_name, row=1, col=1)
+    fig.update_yaxes(title_text=target_name, row=1, col=1)
     fig.update_xaxes(title_text="Iteration", row=1, col=2)
     fig.update_yaxes(title_text="Cost (MSE)", row=1, col=2)
     fig.update_xaxes(title_text="Iteration", row=2, col=1)
