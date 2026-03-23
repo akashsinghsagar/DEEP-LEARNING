@@ -102,6 +102,24 @@ with col2:
     if st.button("🚀 Open Neural Network", use_container_width=True, type="primary"):
         st.switch_page("pages/2_🧠_Neural_Network.py")
 
+st.markdown("##")
+
+st.markdown("""
+<div class="feature-box">
+    <h3>🔁 RNN Sequence Visualizer</h3>
+    <p><b>See how recurrent memory updates over time</b></p>
+    <ul>
+        <li>Convert words to numeric tokens</li>
+        <li>Step-by-step memory state updates</li>
+        <li>Configurable weights, bias, and activation</li>
+        <li>Interactive memory-over-time plot</li>
+    </ul>
+</div>
+""", unsafe_allow_html=True)
+
+if st.button("🚀 Open RNN Visualizer", use_container_width=True, type="primary"):
+    st.switch_page("pages/3_🔁_RNN.py")
+
 st.markdown("---")
 
 # Features section
